@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - Gestion des tickets{% endblock %}
+
+{% block body %}
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <h1 class="mb-4">Créer un ticket de support</h1>
+
+            <p class="text-muted">
+                Vous rencontrez un problème ou souhaitez faire une demande ?
+                Remplissez le formulaire ci-dessous.
+            </p>
+
+            {# Messages de confirmation #}
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+
+                    {{ form_start(form) }}
+
+                        {{ form_row(form.email) }}
+
+                        {{ form_row(form.description) }}
+                        <div class="text-end text-muted small mb-3">
+                        <span id="compteur-description">0</span> / 250 caractères
+                        </div>
+
+                        {{ form_row(form.categorie) }}
+
+                        <button type="submit" class="btn btn-primary mt-3">
+                            Envoyer le ticket
+                        </button>
+
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const description = document.getElementById('ticket_description');
+    const compteur = document.getElementById('compteur-description');
+
+    if (description && compteur) {
+        function actualiserCompteur() {
+            compteur.textContent = description.value.length;
+
+            if (description.value.length >= 250) {
+                compteur.classList.add('text-danger');
+            } else {
+                compteur.classList.remove('text-danger');
+            }
+        }
+
+        description.addEventListener('input', actualiserCompteur);
+        actualiserCompteur();
+    }
+});
+</script>
+{% endblock %}
