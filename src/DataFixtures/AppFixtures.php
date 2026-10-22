@@ -8,6 +8,7 @@ use App\Entity\Etat;
 use App\Entity\Categorie;
 use App\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Entity\Ticket;
 
 class AppFixtures extends Fixture
 {
@@ -24,12 +25,14 @@ class AppFixtures extends Fixture
             'Anomalie',
             'Information'
         ];
-
+        $categoriesObjets = [];
         foreach ($categories as $nom) {
             $categorie = new Categorie();
             $categorie->setNom($nom);
 
             $manager->persist($categorie);
+
+            $categoriesObjets[$nom] = $categorie;
         }
 
         $etats = [
@@ -38,12 +41,14 @@ class AppFixtures extends Fixture
             'Résolu',
             'Fermé'
         ];
-
+        $etatsObjets = [];
         foreach ($etats as $nom) {
             $etat = new Etat();
             $etat->setNom($nom);
 
             $manager->persist($etat);
+
+            $etatsObjets[$nom] = $etat;
         }
         $admin = new User();
 
@@ -61,37 +66,80 @@ class AppFixtures extends Fixture
 
         $manager->persist($admin);
 
-        $user = new User();
+        $jean = new User();
 
-        $user->setNom('Dupont');
-        $user->setPrenom('Jean');
-        $user->setEmail('jean.dupont@example.com');
-        $user->setRoles(['ROLE_USER']);
+       
+        $jean->setNom('Dupont');
+        $jean->setPrenom('Jean');
+        $jean->setEmail('jean.dupont@example.com');
+        $jean->setRoles(['ROLE_USER']);
 
-        $user->setPassword(
+        $jean->setPassword(
             $this->passwordHasher->hashPassword(
-                $user,
+                $jean,
                 'PersonnelTest2026!'
             )
         );
 
-        $manager->persist($user);
+        $manager->persist($jean);
 
-        $user = new User();
+     
 
-        $user->setNom('Martin');
-        $user->setPrenom('Sophie');
-        $user->setEmail('sophie.martin@example.com');
-        $user->setRoles(['ROLE_USER']);
+        $sophie = new User();
 
-        $user->setPassword(
+        $sophie->setNom('Martin');
+        $sophie->setPrenom('Sophie');
+        $sophie->setEmail('sophie.martin@example.com');
+        $sophie->setRoles(['ROLE_USER']);
+
+        $sophie->setPassword(
             $this->passwordHasher->hashPassword(
-                $user,
+                $sophie,
                 'PersonnelTest2026!'
             )
         );
 
-        $manager->persist($user);
+        $manager->persist($sophie);
+
+        $ticket = new Ticket();
+
+        $ticket->setEmail('client1@example.com');
+        $ticket->setDescription(
+            'Je rencontre un problème de connexion à mon espace client.'
+        );
+
+        $ticket->setCategorie($categoriesObjets['Incident']);
+        $ticket->setEtat($etatsObjets['Nouveau']);
+
+        $manager->persist($ticket);
+
+        $ticket = new Ticket();
+
+        $ticket->setEmail('client2@example.com');
+        $ticket->setDescription(
+            'Le site Internet est inaccessible depuis ce matin.'
+        );
+
+        $ticket->setCategorie($categoriesObjets['Panne']);
+        $ticket->setEtat($etatsObjets['Ouvert']);
+        $ticket->setResponsable($jean);
+
+        $manager->persist($ticket);
+
+        $ticket = new Ticket();
+
+        $ticket->setEmail('client3@example.com');
+        $ticket->setDescription(
+            'Je souhaite ajouter une nouvelle rubrique à mon site Internet.'
+        );
+
+        $ticket->setCategorie($categoriesObjets['Evolution']);
+        $ticket->setEtat($etatsObjets['Résolu']);
+        $ticket->setResponsable($sophie);
+
+        $manager->persist($ticket);
+
+
 
         $manager->flush();
     }
