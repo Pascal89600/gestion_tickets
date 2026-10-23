@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ticket n°{{ ticket.id }}{% endblock %}
+
+{% block body %}
+
+    <h1 class="mb-4">Ticket n°{{ ticket.id }}</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Client</th>
+                        <td>{{ ticket.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Catégorie</th>
+                        <td>{{ ticket.categorie.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th>État</th>
+                        <td>{{ ticket.etat.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Responsable</th>
+                        <td>
+                            {% if ticket.responsable %}
+                                {{ ticket.responsable.prenom }}
+                                {{ ticket.responsable.nom }}
+                            {% else %}
+                                Non attribué
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Date d'ouverture</th>
+                        <td>
+                            {{ ticket.dateOuverture|date('d/m/Y H:i', 'Europe/Paris') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Date de clôture</th>
+                        <td>
+                            {% if ticket.dateCloture %}
+                                {{ ticket.dateCloture|date('d/m/Y H:i', 'Europe/Paris') }}
+                            {% else %}
+                                Non clôturé
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ ticket.description|nl2br }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <a
+                href="{{ path('app_ticket_index') }}"
+                class="btn btn-secondary"
+            >
+                Retour à la liste
+            </a>
+            <a
+                href="{{ path('app_ticket_etat', {'id': ticket.id}) }}"
+                class="btn btn-primary"
+            >
+                Modifier l'état
+            </a>
+
+        </div>
+    </div>
+
+{% endblock %}
