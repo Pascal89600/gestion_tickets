@@ -22,6 +22,7 @@
                     Gestion des tickets
                 </a>
 
+                
                 {% if app.user %}
                     <div class="d-flex align-items-center gap-3">
                         <a
@@ -30,6 +31,14 @@
                         >
                             Tickets
                         </a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a
+                                href="{{ path('app_admin_index') }}"
+                                class="btn btn-outline-light btn-sm"
+                            >
+                                Administration
+                            </a>
+                        {% endif %}
                         <span class="text-white">
                             {{ app.user.prenom }} {{ app.user.nom }}
                         </span>
@@ -41,6 +50,7 @@
                             Déconnexion
                         </a>
                     </div>
+                    
                 {% else %}
                     <a
                         href="{{ path('app_login') }}"

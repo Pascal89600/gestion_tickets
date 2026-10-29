@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+    <h1>Administration</h1>
+    <a
+        href="{{ path('app_admin_categorie_index') }}"
+        class="btn btn-primary mb-3"
+    >
+        Gérer les catégories
+    </a>
+{% endblock %}
