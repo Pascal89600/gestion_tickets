@@ -1,14 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}<h1>Gestion des catégories</h1>{% endblock %}
+{% block title %}Gestion des catégories{% endblock %}
 
 {% block body %}
+    <h1>Gestion des catégories</h1>
     <a
         href="{{ path('app_admin_categorie_new') }}"
         class="btn btn-primary mb-3"
     >
         Ajouter une catégorie
     </a>
+    
     <table class="table table-striped">
         <thead>
             <tr>
