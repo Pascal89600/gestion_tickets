@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs{% endblock %}
+
+{% block body %}
+    <h1>Gestion des utilisateurs</h1>
+    <a
+        href="{{ path('app_admin_user_new') }}"
+        class="btn btn-primary mb-3"
+    >
+        Ajouter un utilisateur
+    </a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>E-mail</th>
+                <th>Rôle</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.nom }}</td>
+                    <td>{{ user.prenom }}</td>
+                    <td>{{ user.email }}</td>
+                    
+                    <td>
+                        {% if 'ROLE_ADMIN' in user.roles %}
+                        Adminstrateur
+                        {% else %}
+                        Utilisateur
+                        {% endif %}
+                    </td>
+                    
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucun utilisateur disponible </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
