@@ -3,7 +3,11 @@
 {% block title %}Ticket n°{{ ticket.id }}{% endblock %}
 
 {% block body %}
-
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
     <h1 class="mb-4">Ticket n°{{ ticket.id }}</h1>
 
     <div class="card shadow-sm">

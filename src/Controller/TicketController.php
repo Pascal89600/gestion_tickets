@@ -75,7 +75,7 @@ class TicketController extends AbstractController
 
             $entityManager->flush();
 
-            $this->addFlash('success', 'L’état du ticket a été modifié.');
+            $this->addFlash('success', 'Le ticket n°' . $ticket->getId() . ' a été mis à jour avec succès.');
 
             return $this->redirectToRoute('app_ticket_show', [
                 'id' => $ticket->getId(),
