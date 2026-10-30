@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Ticket;
+use App\Entity\User;
 
 #[Route('/tickets')]
 class TicketController extends AbstractController
@@ -49,14 +50,18 @@ class TicketController extends AbstractController
 
         $form = $this->createForm(TicketEtatType::class, [
             'etat' => $ticket->getEtat(),
+            'responsable' =>$ticket->getResponsable(),
         ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $nouvelEtat = $form->get('etat')->getData();
 
+            $nouvelEtat = $form->get('etat')->getData();
             $ticket->setEtat($nouvelEtat);
+
+            $nouveauResponsable = $form->get('responsable')->getData();
+            $ticket->setResponsable($nouveauResponsable);
 
             if ($nouvelEtat->getNom() === 'Fermé') {
                 if ($ticket->getDateCloture() === null) {
