@@ -56,4 +56,27 @@ class CategorieController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    #[Route('/{id}/edit', name: 'app_admin_categorie_edit', methods: ['GET', 'POST'])]
+    public function modifierCategorie(
+        Categorie $categorie,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $form = $this->createForm(CategorieType::class, $categorie);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            $this->addFlash('success', 'La catégorie a été modifiée avec succès.');
+
+            return $this->redirectToRoute('app_admin_categorie_index');
+        }
+        return $this->render('admin/categorie/edit.html.twig', [
+            'categorie' => $categorie,
+            'form' => $form->createView(),
+        ]);
+    }
 }

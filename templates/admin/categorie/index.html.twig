@@ -3,6 +3,11 @@
 {% block title %}Gestion des catégories{% endblock %}
 
 {% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
     <h1>Gestion des catégories</h1>
     <a
         href="{{ path('app_admin_categorie_new') }}"
@@ -11,11 +16,13 @@
         Ajouter une catégorie
     </a>
     
+    
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Nom</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -24,10 +31,16 @@
                 <tr>
                     <td>{{ categorie.id }}</td>
                     <td>{{ categorie.nom }}</td>
+                    <td><a
+                            href="{{ path('app_admin_categorie_edit', {'id': categorie.id}) }}"
+                            class="btn btn-primary mb-3"
+                        >
+                            Modifier
+                        </a></td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="2" class="text-center">Aucune catégorie disponible</td>
+                    <td colspan="3" class="text-center">Aucune catégorie disponible</td>
                 </tr>
             
             {% endfor %}
