@@ -35,8 +35,8 @@ class Etat
     #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'etat')]
     private Collection $tickets;
 
-    #[ORM\Column]
-    private ?bool $cloturant = false;
+    #[ORM\Column(type: 'boolean', options: ['default'=>false])]
+    private bool $cloturant = false;
 
     public function __construct()
     {
