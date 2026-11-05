@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un ticket{% endblock %}
+
+{% block body %}
+    <h1>Modifier un ticket</h1>
+
+    {{ form_start(form) }}
+
+        {{ form_row(form.email) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.categorie) }}
+        {{ form_row(form.etat) }}
+        {{ form_row(form.responsable) }}
+
+        <button type="submit" class="btn btn-primary mt-3">
+            Enregistrer
+        </button>
+        <a
+            href="{{ path('app_ticket_index') }}"
+            class="btn btn-secondary mt-3 "
+        >
+            Retour
+        </a>
+
+    {{ form_end(form) }}
+{% endblock %}

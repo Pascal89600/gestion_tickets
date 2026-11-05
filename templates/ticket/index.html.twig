@@ -20,6 +20,7 @@
                             <th>État</th>
                             <th>Responsable</th>
                             <th>Date d'ouverture</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
 
@@ -45,10 +46,21 @@
                                 <td>
                                     {{ ticket.dateOuverture|date('d/m/Y H:i', 'Europe/Paris') }}
                                 </td>
+                                <td>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a
+                                        href="{{ path('app_admin_ticket_edit', {'id': ticket.id}) }}"
+                                        class="btn btn-primary btn-sm"
+                                    >
+                                        Modifier
+                                    </a>
+                                {% endif %}
+                                </td>
+                                
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="6" class="text-center text-muted">
+                                <td colspan="7" class="text-center text-muted">
                                     Aucun ticket enregistré.
                                 </td>
                             </tr>
