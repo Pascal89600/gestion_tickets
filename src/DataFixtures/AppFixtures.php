@@ -45,6 +45,9 @@ class AppFixtures extends Fixture
         foreach ($etats as $nom) {
             $etat = new Etat();
             $etat->setNom($nom);
+            if($nom === 'Fermé'){
+                $etat->setCloturant(true);
+            }
 
             $manager->persist($etat);
 
