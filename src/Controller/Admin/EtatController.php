@@ -33,7 +33,8 @@ final class EtatController extends AbstractController
     public function new(
         Request $request,
         EntityManagerInterface $entityManager
-    ): Response {
+    ): Response 
+    {
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -42,7 +43,8 @@ final class EtatController extends AbstractController
         $form = $this->createForm(EtatType::class, $etat);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) 
+            {
             $entityManager->persist($etat);
             $entityManager->flush();
 
@@ -52,9 +54,39 @@ final class EtatController extends AbstractController
             );
 
             return $this->redirectToRoute('app_admin_etat_index');
-        }
+            }
 
         return $this->render('admin/etat/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+    #[Route('/{id}/edit', name: 'app_admin_etat_edit', methods: ['GET', 'POST'])]
+    public function modifierEtat(
+        Etat $etat,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response 
+    {
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $form = $this->createForm(EtatType::class, $etat);
+        
+        $form->handleRequest($request);
+        
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+           
+
+            $entityManager->flush();
+            $this->addFlash('success', 'L\'état a été modifié avec succès.');
+
+            return $this->redirectToRoute('app_admin_etat_index');
+        }
+        
+        return $this->render('admin/etat/edit.html.twig', [
+            'etat' => $etat,
             'form' => $form->createView(),
         ]);
     }

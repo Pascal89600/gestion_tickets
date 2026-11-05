@@ -35,6 +35,9 @@ class Etat
     #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'etat')]
     private Collection $tickets;
 
+    #[ORM\Column]
+    private ?bool $cloturant = false;
+
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
@@ -83,6 +86,18 @@ class Etat
                 $ticket->setEtat(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isCloturant(): bool
+    {
+        return $this->cloturant;
+    }
+
+    public function setCloturant(bool $cloturant): static
+    {
+        $this->cloturant = $cloturant;
 
         return $this;
     }

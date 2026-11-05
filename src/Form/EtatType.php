@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use App\Entity\Etat;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,6 +14,10 @@ class EtatType extends AbstractType
     {
         $builder
             ->add('nom')
+            ->add('cloturant', CheckboxType::class, [
+                'label' => 'Cet état entraîne la clôture du ticket',
+                'required' => false,
+            ])
         ;
     }
 

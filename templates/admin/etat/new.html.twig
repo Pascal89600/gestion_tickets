@@ -7,10 +7,17 @@
     {{ form_start(form) }}
 
         {{ form_row(form.nom) }}
+        {{ form_row(form.cloturant) }}
 
         <button type="submit" class="btn btn-primary mt-3">
             Enregistrer
         </button>
+        <a
+            href="{{ path('app_admin_etat_index') }}"
+            class="btn btn-primary mt-3 "
+        >
+            Retour
+        </a>
 
     {{ form_end(form) }}
 {% endblock %}

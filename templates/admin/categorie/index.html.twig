@@ -31,12 +31,14 @@
                 <tr>
                     <td>{{ categorie.id }}</td>
                     <td>{{ categorie.nom }}</td>
-                    <td><a
+                    <td>
+                        <a
                             href="{{ path('app_admin_categorie_edit', {'id': categorie.id}) }}"
-                            class="btn btn-primary mb-3"
+                            class="btn btn-primary btn-sm"
                         >
                             Modifier
-                        </a></td>
+                        </a>
+                    </td>
                 </tr>
             {% else %}
                 <tr>

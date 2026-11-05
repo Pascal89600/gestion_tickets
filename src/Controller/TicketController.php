@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+
+use Psr\Log\LoggerInterface;
 use App\Form\TicketEtatType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,13 +46,14 @@ class TicketController extends AbstractController
     public function modifierEtat(
         Ticket $ticket,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        LoggerInterface $logger
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $form = $this->createForm(TicketEtatType::class, [
             'etat' => $ticket->getEtat(),
-            'responsable' =>$ticket->getResponsable(),
+            'responsable' => $ticket->getResponsable(),
         ]);
 
         $form->handleRequest($request);
@@ -63,7 +66,7 @@ class TicketController extends AbstractController
             $nouveauResponsable = $form->get('responsable')->getData();
             $ticket->setResponsable($nouveauResponsable);
 
-            if ($nouvelEtat->getNom() === 'Fermé') {
+            if ($nouvelEtat->isCloturant()) {
                 if ($ticket->getDateCloture() === null) {
                     $ticket->setDateCloture(
                         new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
@@ -76,7 +79,7 @@ class TicketController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Le ticket n°' . $ticket->getId() . ' a été mis à jour avec succès.');
-
+            $logger->info('Le ticket n°' . $ticket->getId() . ' a été modifié.');
             return $this->redirectToRoute('app_ticket_show', [
                 'id' => $ticket->getId(),
             ]);
@@ -87,4 +90,5 @@ class TicketController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    
 }
