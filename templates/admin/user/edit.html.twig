@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}Modifier un utilisateur{% endblock %}
+
+{% block body %}
+    <h1>Modifier un utilisateur</h1>
+
+    {{ form_start(form) }}
+
+        {{ form_row(form.prenom) }}
+        {{ form_row(form.nom) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.roles) }}
+        
+
+        <button type="submit" class="btn btn-primary mt-3">
+            Enregistrer
+        </button>
+         <a
+            href="{{ path('app_admin_user_index') }}"
+            class="btn btn-primary mt-3 "
+        >
+            Retour
+        </a>
+
+    {{ form_end(form) }}
+{% endblock %}

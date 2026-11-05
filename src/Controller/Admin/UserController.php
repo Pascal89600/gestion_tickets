@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Form\UserEditType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,5 +64,29 @@ final class UserController extends AbstractController
         return $this->render('admin/user/new.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+    #[Route('/{id}/edit', name: 'app_admin_user_edit', methods: ['GET', 'POST'])]
+    public function modifierUtilisateur(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        User $user
+    ): Response {
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $form = $this->createForm(UserEditType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            $this->addFlash('success', 'L\'utilisateur a été modifié avec succès.');
+
+            return $this->redirectToRoute('app_admin_user_index');
+        }
+        return $this->render('admin/user/edit.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+
     }
 }

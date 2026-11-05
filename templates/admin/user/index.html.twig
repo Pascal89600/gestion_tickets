@@ -18,6 +18,7 @@
                 <th>Prénom</th>
                 <th>E-mail</th>
                 <th>Rôle</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -27,20 +28,27 @@
                     <td>{{ user.id }}</td>
                     <td>{{ user.nom }}</td>
                     <td>{{ user.prenom }}</td>
-                    <td>{{ user.email }}</td>
-                    
+                    <td>{{ user.email }}</td>                   
                     <td>
                         {% if 'ROLE_ADMIN' in user.roles %}
-                        Adminstrateur
+                        Administrateur
                         {% else %}
                         Utilisateur
                         {% endif %}
+                    </td>
+                    <td>
+                        <a
+                            href="{{ path('app_admin_user_edit', {'id': user.id}) }}"
+                            class="btn btn-primary btn-sm"
+                        >
+                            Modifier
+                        </a>
                     </td>
                     
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="5" class="text-center">Aucun utilisateur disponible </td>
+                    <td colspan="6" class="text-center">Aucun utilisateur disponible </td>
                 </tr>
             {% endfor %}
         </tbody>
