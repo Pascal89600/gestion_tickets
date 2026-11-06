@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use Psr\Log\LoggerInterface;
 use App\Form\TicketEtatType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Ticket;
-use App\Entity\User;
+
 
 #[Route('/tickets')]
 class TicketController extends AbstractController
@@ -66,6 +65,9 @@ class TicketController extends AbstractController
             $nouveauResponsable = $form->get('responsable')->getData();
             $ticket->setResponsable($nouveauResponsable);
 
+
+            // Conserve la date de clôture existante si le ticket est déjà fermé.
+            // Initialise cette date à la première clôture et l'efface en cas de réouverture.
             if ($nouvelEtat->isCloturant()) {
                 if ($ticket->getDateCloture() === null) {
                     $ticket->setDateCloture(
@@ -80,6 +82,7 @@ class TicketController extends AbstractController
 
             $this->addFlash('success', 'Le ticket n°' . $ticket->getId() . ' a été mis à jour avec succès.');
             $logger->info('Le ticket n°' . $ticket->getId() . ' a été modifié.');
+
             return $this->redirectToRoute('app_ticket_show', [
                 'id' => $ticket->getId(),
             ]);
@@ -90,5 +93,4 @@ class TicketController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    
 }

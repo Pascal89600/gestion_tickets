@@ -13,7 +13,6 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin/tickets')]
 final class TicketController extends AbstractController
 {
-
     #[Route('/{id}/edit', name: 'app_admin_ticket_edit', methods: ['GET', 'POST'])]
     public function modifierTicket(
         Ticket $ticket,
@@ -28,8 +27,9 @@ final class TicketController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $nouvelEtat = $form->get('etat')->getData();
-            $ticket->getEtat();
 
+            // Conserve la date de clôture existante si le ticket est déjà fermé.
+            // Initialise cette date à la première clôture et l'efface en cas de réouverture.
             if ($nouvelEtat->isCloturant()) {
                 if ($ticket->getDateCloture() === null) {
                     $ticket->setDateCloture(
